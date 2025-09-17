@@ -2,6 +2,7 @@ import re
 import os
 import zipfile
 from openpyxl import load_workbook
+import tempfile
 
 patterns = {
     "주민등록번호": r"\b\d{6}-\d{7}\b",
@@ -40,11 +41,20 @@ def inspect_zip(file_path):
 
 def scan_file(file_path):
     ext = os.path.splitext(file_path)[1].lower()
+    result = False
+
     if ext == '.txt':
-        return inspect_txt(file_path)
+        result = inspect_txt(file_path)
     elif ext == '.xlsx':
-        return inspect_xlsx(file_path)
+        result = inspect_xlsx(file_path)
     elif ext == '.zip':
-        return inspect_zip(file_path)
+        result = inspect_zip(file_path)
     else:
+        print(f"지원하지 않는 파일 형식")
         return False
+    
+    if result:
+        print("민감정보 포함")
+    else:
+        print("민감정보가 없습니다.")
+    return result
