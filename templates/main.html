@@ -4,49 +4,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <style>
+        .download-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
     <title>파일 목록</title>
 </head>
 
 <body>
     {% include 'header.html' %}
     <div class="container">
-        <h1>Pyhard</h1>
+        <h1>파일 목록</h1>
 
         <div class="header-actions">
             <a href="/upload_page" class="upload-btn">파일 업로드</a>
-            <button class="download-btn" onclick="alert('선택한 파일들을 다운로드합니다.')">선택 다운로드</button>
+            <button id="multi-download-btn" class="download-btn" disabled>선택 다운로드</button>
         </div>
 
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
-                    <th>제목</th>
-                    <th>파일 크기</th>
-                    <th>문서명</th>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>파일명</th>
                     <th>업로더</th>
+                    <th>업로드 시간</th>
+                    <th>삭제</th>
                 </tr>
             </thead>
             <tbody>
                 {% if files %}
                 {% for file in files %}
                 <tr>
-                    <td><input type="checkbox" name="file_checkbox" value="{{ file.id }}"></td>
-                    <td class="file-title"><a href="/download/{{ file.id }}">{{ file.title }}</a></td>
-                    <td>{{ file.size }}</td>
-                    <td>{{ file.document_name }}</td>
-                    <td>{{ file.uploader_name }}</td>
+                    <td><input type="checkbox" class="file-checkbox" name="file_checkbox" value="{{ file.filename }}">
+                    </td>
+                    <td>{{ file["filename"] }}</td>
+                    <td>{{ file["uploader"] }}</td>
+                    <td>{{ file["upload_time"] }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('delete_file', filename=file['filename']) }}"
+                            style="display:inline;">
+                            <button type="submit" class="delete-btn">삭제</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="5" style="text-align: center;">아직 업로드된 파일이 없습니다.</td>
+                    <td colspan="6" style="text-align: center;">아직 업로드된 파일이 없습니다.</td>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        const selectAllCheckbox = document.getElementById('select-all');
+        const fileCheckboxes = document.querySelectorAll('.file-checkbox');
+        const multiDownloadBtn = document.getElementById('multi-download-btn');
+
+        // '전체 선택' 체크박스 기능
+        selectAllCheckbox.addEventListener('change', (e) => {
+            fileCheckboxes.forEach(checkbox => {
+                checkbox.checked = e.target.checked;
+            });
+            updateDownloadButtonState();
+        });
+
+        // 개별 체크박스 기능
+        fileCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                if (!checkbox.checked) {
+                    selectAllCheckbox.checked = false;
+                }
+                updateDownloadButtonState();
+            });
+        });
+
+        // 다운로드 버튼 활성화/비활성화
+        function updateDownloadButtonState() {
+            const anyChecked = Array.from(fileCheckboxes).some(checkbox => checkbox.checked);
+            multiDownloadBtn.disabled = !anyChecked;
+        }
+
+        // '선택 다운로드' 버튼 기능
+        multiDownloadBtn.addEventListener('click', () => {
+            const selectedFiles = Array.from(fileCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            if (selectedFiles.length > 0) {
+                // 각 파일을 순회하며 다운로드 요청
+                selectedFiles.forEach(filename => {
+                    const link = document.createElement('a');
+                    link.href = '{{ url_for("download_file", filename="") }}' + filename;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            } else {
+                alert('다운로드할 파일을 선택하세요.');
+            }
+        });
+
+        // 페이지 로드 시 초기 상태 업데이트
+        document.addEventListener('DOMContentLoaded', updateDownloadButtonState);
+    </script>
 </body>
 
 </html>
