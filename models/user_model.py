@@ -2,9 +2,10 @@
 from models.db import get_collection
 from datetime import datetime
 
-def create_user(username, password, email):
+def create_user(name,  email, username, password):
     users = get_collection("users")
     users.insert_one({
+        "name" : name ,
         "username": username,
         "password": password,
         "email": email,
