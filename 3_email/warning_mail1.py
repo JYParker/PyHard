@@ -39,8 +39,8 @@ def mail_sender(report_file, recv_email):
 # DB에서 민감정보 가져오기
 def load_data():
     client = MongoClient("mongodb://localhost:27017/")
-    db = client["scan_file"]
-    collection = db["sensitive_info"]
+    db = client["webhard"]
+    collection = db["files"]
 
     results = collection.find()
     local_files = []
