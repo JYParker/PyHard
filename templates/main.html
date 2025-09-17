@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <title>Pyhard</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h1>Pyhard</h1>
+
+        <div class="header-actions">
+            <a href="/upload_page" class="upload-btn">파일 업로드</a>
+            <button class="download-btn" onclick="alert('선택한 파일들을 다운로드합니다.')">선택 다운로드</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>제목</th>
+                    <th>파일 크기</th>
+                    <th>문서명</th>
+                    <th>업로더</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if files %}
+                {% for file in files %}
+                <tr>
+                    <td><input type="checkbox" name="file_checkbox" value="{{ file.id }}"></td>
+                    <td class="file-title"><a href="/download/{{ file.id }}">{{ file.title }}</a></td>
+                    <td>{{ file.size }}</td>
+                    <td>{{ file.document_name }}</td>
+                    <td>{{ file.uploader_name }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">아직 업로드된 파일이 없습니다.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
