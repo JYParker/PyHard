@@ -41,11 +41,11 @@ def mail_sender(refort_file, recv_email):
     smtp.quit()
 
 
-# DB 에서 민감정보 파일 가져오기 + 사용자 email
+# DB 에서 민감정보 파일 가져오기
 def load_data():
     client = MongoClient('mongodb://localhost:27017')
-    db = client['user_db'] 
-    collection = db['users'] 
+    db = client['scan_file'] 
+    collection = db['sensitive_info'] 
 
     results = collection.find()
 
