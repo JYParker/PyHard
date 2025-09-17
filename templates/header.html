@@ -1,0 +1,14 @@
+<div class="header">
+    <div class="logo">
+        <a href="/">
+            <i class="fas fa-hdd"></i> Pyhard
+        </a>
+    </div>
+    <div class="user-actions">
+        {% if is_logged_in %}
+        <a href="/logout">로그아웃</a>
+        {% else %}
+        <a href="/login">로그인</a>
+        {% endif %}
+    </div>
+</div>
