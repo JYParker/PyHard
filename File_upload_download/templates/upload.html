@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>파일 업로드</h1>
+    <form method="post" enctype="multipart/form-data" action="/upload">
+        <input type="file" name="file">
+        <input type="submit" value="업로드">
+    </form>
+
+    <h2>업로드된 파일 목록</h2>
+    <ul>
+    {% for f in files %}
+        <li>
+            {{ f["filename"] }} (uploader: {{ f["uploader"] }}, upload: {{ f["upload_time"] }})
+            - <a href="{{ url_for('download_file', filename=f['filename']) }}">다운로드</a>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
