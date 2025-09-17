@@ -11,6 +11,8 @@ from pymongo import MongoClient
 # 이메일 보내기
 def send_email(refort_file, recv_email):
     load_dotenv()
+
+    # 보내는 사람 이메일 + .env 파일에 작성해 주셔야합니다.
     send_email = os.getenv("SECRET_ID")
     send_pwd = os.getenv("SECRET_PASS")
 
@@ -42,15 +44,15 @@ def send_email(refort_file, recv_email):
 # DB 에서 민감정보 파일 가져오기 + 사용자 email
 def load_data():
     client = MongoClient('mongodb://localhost:27017')
-    db = client[''] # db 이름
-    collection = db[''] # collection 이름
+    db = client['user_db'] 
+    collection = db['users'] 
 
     results = collection.find()
 
     local_files = []
 
     for doc in results:
-        user_email = doc.get("user_email")
+        user_email = doc.get("email")
         filename = doc.get("filename")
         file_path = doc.get("file_path")
 
