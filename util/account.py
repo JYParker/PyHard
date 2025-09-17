@@ -1,11 +1,8 @@
 from pymongo import MongoClient
 import bcrypt
-
 import sys
 import os
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from models.user_model import create_user, find_user
 from models.db import init_db
 
@@ -27,7 +24,7 @@ def check_double_regist(id):
     if collection.count_documents({}) == 0:
         return False  # 컬렉션이 비어있으면 무조건 가입 가능
     else:
-        user = collection.find_one({'id':id})
+        user = collection.find_one({'username':id})
         return user is not None
 
 #로그인 함수
@@ -38,7 +35,7 @@ def sign_in(info_list):
 
     user = find_user(id)
 
-    if pw_check(pw, user['pw']) and user:
+    if pw_check(pw, user['password']) and user:
         return id
     else:
         False
