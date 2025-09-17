@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+.header {
+    background-color: #343a40;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .logo a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+.header .user-actions a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border: 1px solid white;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.header .user-actions a:hover {
+    background-color: #555;
+}
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+h1 {
+    color: #333;
+    text-align: center;
+}
+.header-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+.upload-btn, .download-btn {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 10px;
+}
+.upload-btn {
+    background-color: #007bff;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+th {
+    background-color: #f8f9fa;
+}
+.file-title a {
+    color: #007bff;
+    text-decoration: none;
+}
+.file-title a:hover {
+    text-decoration: underline;
+}
