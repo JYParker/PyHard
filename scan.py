@@ -2,7 +2,6 @@ import re
 import os
 import zipfile
 from openpyxl import load_workbook
-import tempfile
 
 patterns = {
     "주민등록번호": r"\b\d{6}-\d{7}\b",
@@ -58,3 +57,4 @@ def scan_file(file_path):
     else:
         print("민감정보가 없습니다.")
     return result
+
