@@ -1,9 +1,8 @@
 from pymongo import MongoClient
-import config
+from . import config
 
-client = MongoClient('mongodb://localhost:27017/')
-db = client['member_management']
-collection = db['members']
+client = None
+db = None
 
 def init_db():
     global client, db

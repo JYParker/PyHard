@@ -1,3 +1,4 @@
+# 로그 기록
 from models.db import get_collection
 from datetime import datetime
 
