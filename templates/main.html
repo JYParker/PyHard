@@ -24,7 +24,12 @@
             <a href="/upload_page" class="upload-btn">파일 업로드</a>
             <button id="multi-download-btn" class="download-btn" disabled>선택 다운로드</button>
         </div>
-
+        <div class="search-section">
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="파일 이름 검색..." class="search-input">
+                <button type="submit" class="search-btn">검색</button>
+            </form>
+        </div>
         <table>
             <thead>
                 <tr>

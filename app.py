@@ -168,6 +168,23 @@ def delete_file(filename):
     
     return redirect(url_for("index"))
 
+@app.route("/search")
+def search():
+    if 'user_id' not in session:
+        return redirect(url_for('login_page'))
+    # url에서 query라는 이름의 파라미터 가져옴
+    query = request.args.get('query', '')
+    if query:
+        # ($regex: query) 는 정규 표현식을 사용해 query가 포함된 모든 파일 검색
+        # ($options: i) 는 대소문자 구별하지 않고 검색 
+        search_query = {"filename": {"$regex": query, "$options": "i"}}
+        files = list(files_collection.find(search_query, {"_id": 0}))
+    else:
+        # 검색어를 지정하지 않으면 빈 문자열 반환해 모든 파일 조회
+        files = list(files_collection.find({}, {"_id": 0}))
+
+    return render_template('main.html', files=files)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
