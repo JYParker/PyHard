@@ -6,22 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>파일 업로드</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='upload.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 
 <body>
   {% include 'header.html' %}
-    <div class="container upload-container">
-        <h1>파일 업로드</h1>
-        <div class="upload-section">
-            <form method="post" enctype="multipart/form-data" action="/upload" class="upload-form">
-                <input type="file" name="file">
-                <input type="submit" value="업로드" class="upload-btn">
-            </form>
-        </div>
+  <div class="container upload-container">
+    <h1>파일 업로드</h1>
+    <div class="upload-section">
+      <form method="post" enctype="multipart/form-data" action="/upload" class="upload-form">
+        <input type="file" name="file">
+        <input type="submit" value="업로드" class="upload-btn">
+      </form>
     </div>
+  </div>
 </body>
 
 </html>
