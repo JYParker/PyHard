@@ -44,6 +44,10 @@ def index():
 #    # is_logged_in 변수와 dummy_files 전달
 #    return render_template('main.html', files=dummy_files, is_logged_in=is_logged_in)
 
+@app.route("/intro")
+def intro():
+    return render_template("intro.html")
+
 # 로그인 페이지 렌더링
 @app.route('/login')
 def login_page():
