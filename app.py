@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 from pymongo import MongoClient 
 from werkzeug.utils import secure_filename
-from third_email import warning_mail1
+from util import warning_mail1
 import util.scan as scan
 
 app = Flask(__name__)
