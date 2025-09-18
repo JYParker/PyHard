@@ -33,12 +33,15 @@ def sign_in(info_list):
     id = info_list[0]
     pw = info_list[1]
 
-    user = find_user(id)
+    try:
+        user = find_user(id)
 
-    if pw_check(pw, user['password']) and user:
-        return id
-    else:
-        False
+        if pw_check(pw, user['password']) and user:
+            return id
+        else:
+            return False
+    except:
+        return False
 
 #회원가입함수(infolist= name,email, username(id),pw)
 def sign_up(info_list):

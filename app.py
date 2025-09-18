@@ -7,14 +7,14 @@ from datetime import datetime
 from pymongo import MongoClient 
 from werkzeug.utils import secure_filename
 from third_email import warning_mail1
-import scan
+import util.scan as scan
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
 # MongoDB 연결
 client = MongoClient("mongodb://localhost:27017/")
-db = client["webhard"]
+db = client["webhard_project"]
 files_collection = db["files"]
 
 # 업로드 폴더 지정
@@ -36,7 +36,7 @@ def index():
     if 'user_id' not in session:
         return redirect(url_for('login_page'))
     # DB에서 파일 조회
-    files = list(files_collection.find({}, {"_id": 0}))
+    files = list(files_collection.find({"uploader":session["user_id"]}, {"_id": 0}))
     ## 세션에 'user_id' 있는지 확인해서 로그인 상태 파악
     is_logged_in = 'user_id' in session
     return render_template('main.html', files=files, is_logged_in=is_logged_in)
@@ -131,7 +131,8 @@ def upload_file():
             file.save(filepath)
 
             if scan.scan_file(filepath):
-                warning_mail1.mail_sender(filepath,file)
+                print(type(session['user_id']))
+                warning_mail1.mail_sender(filepath,session['user_id'])
                 file_sen=True
 
             # MongoDB에 메타데이터 저장

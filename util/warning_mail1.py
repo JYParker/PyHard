@@ -8,7 +8,12 @@ import shutil
 from dotenv import load_dotenv
 
 # 이메일 보내기
-def mail_sender(report_file, recv_email):
+def mail_sender(report_file, recv_id):
+
+    client = MongoClient("mongodb://localhost:27017/")
+    db = client["webhard_project"]
+    collection = db["users"]
+
     load_dotenv()
 
     send_email = os.getenv("SECRET_ID")
@@ -19,14 +24,15 @@ def mail_sender(report_file, recv_email):
     smtp.starttls()
     smtp.login(send_email, send_pwd)
 
+    recv_email = collection.find_one({'username':recv_id})['email']
     msg = MIMEMultipart()
     msg['Subject'] = f"민감정보 식별 결과 안내"
     msg['From'] = send_email
     msg['To'] = recv_email
 
-    text = f"민감정보가 포함된 파일을 참조해주세요."
+    text = f"업로드하신 파일에서 개인정보가 탐지되었습니다."
     msg.attach(MIMEText(text))
-
+    print(report_file)
     with open(report_file, 'rb') as file:
         part = MIMEApplication(file.read())
         part.add_header('Content-Disposition', 'attachment', filename=os.path.basename(report_file))
@@ -66,9 +72,9 @@ def load_data():
     return local_files
 
 
-# 메인 실행
-if __name__ == "__main__":
-    files_info = load_data()
+# # 메인 실행
+# if __name__ == "__main__":
+#     files_info = load_data()
 
-    for item in files_info:
-        mail_sender(item["local_file"], item["user_email"])
+#     for item in files_info:
+#         mail_sender(item["local_file"], item["user_email"])
